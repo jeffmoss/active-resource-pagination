@@ -60,5 +60,9 @@ class PaginationTest < Test::Unit::TestCase
     posts = Post.find(:all)
 
     assert_equal posts.length, 1
+
+    # mock page totals
+    assert_equal posts.total_pages, 1
+    assert_equal posts.current_page, 1
   end
 end

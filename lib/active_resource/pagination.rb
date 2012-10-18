@@ -28,15 +28,21 @@ module ActiveResource
 
       def decode(json)
         meta = super(json)
-        if meta.is_a?(Hash)
+        if meta.is_a?(Hash) && meta['total_pages']
           list = PagedArray.new(meta[collection_name])
 
           list.total_pages  = meta['total_pages']
           list.current_page = meta['current_page']
 
           list
+        elsif meta.is_a?(Array)
+          list = PagedArray.new(meta)
+
+          list.total_pages = 1
+          list.current_page = 1
+
+          list
         else
-          # unexpected result, fall back to default behavior
           meta
         end
       end
